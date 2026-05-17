@@ -6,6 +6,13 @@ the project adheres to [Semantic Versioning](https://semver.org/).
 
 Releases are produced by `release-please` from Conventional Commits.
 
+## [0.2.0](https://github.com/FloopyAI/floopy-rust/compare/floopy-sdk-v0.1.0...floopy-sdk-v0.2.0) (2026-05-17)
+
+
+### Added
+
+* publish rust sdk ([ff4b895](https://github.com/FloopyAI/floopy-rust/commit/ff4b8952a008b8968da197d6e54243f4c0565247))
+
 ## [Unreleased]
 
 ### Added
