@@ -1,0 +1,46 @@
+[package]
+name = "floopy-sdk"
+version = "0.1.0" # x-release-please-version
+edition = "2021"
+rust-version = "1.82"
+description = "Official Floopy AI Gateway SDK for Rust. Drop-in wrapper around the async-openai crate with cache, audit, experiments, and security on top."
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/FloopyAI/floopy-rust"
+homepage = "https://floopy.ai/docs/guides/sdks/floopy-sdk-rust"
+documentation = "https://docs.rs/floopy-sdk"
+keywords = ["floopy", "openai", "ai", "gateway", "llm"]
+categories = ["api-bindings", "web-programming::http-client"]
+exclude = [".github/", "examples/", "tests/", "/.gitignore"]
+
+[lib]
+name = "floopy"
+
+[dependencies]
+async-openai = { version = "0.38", default-features = false, features = [
+    "rustls",
+    "chat-completion",
+    "embedding",
+    "model",
+] }
+reqwest = { version = "0.13", default-features = false, features = [
+    "json",
+    "stream",
+    "rustls",
+    "webpki-roots",
+] }
+tokio = { version = "1", features = ["time"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+futures = "0.3"
+async-stream = "0.3"
+percent-encoding = "2"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+wiremock = "0.6"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

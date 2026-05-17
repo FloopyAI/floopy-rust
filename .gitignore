@@ -1,0 +1,16 @@
+# Rust build output
+/target/
+
+# Cargo.lock is committed for the test/release CI (see CONTRIBUTING); keep
+# it — it is ignored by consumers of a library crate anyway.
+
+# Secrets / local env
+.env
+.env.local
+.env.*.local
+examples/.env
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
