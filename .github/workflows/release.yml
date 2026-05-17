@@ -54,7 +54,7 @@ jobs:
       contents: read
       id-token: write # OIDC for crates.io Trusted Publishing
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ needs.release-please.outputs.tag_name }}
 
