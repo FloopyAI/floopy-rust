@@ -1,21 +1,25 @@
 //! Typed handles for every Floopy-only gateway resource. Obtain them from
 //! the [`Floopy`](crate::Floopy) client (e.g. `client.decisions()`).
 
+mod batches;
 mod constraints;
 mod decisions;
 mod evaluations;
 mod experiments;
 mod export;
 mod feedback;
+mod files;
 mod routing;
 mod sessions;
 
+pub use batches::Batches;
 pub use constraints::Constraints;
 pub use decisions::Decisions;
 pub use evaluations::Evaluations;
 pub use experiments::Experiments;
 pub use export::{DecisionExportStream, Export};
 pub use feedback::Feedback;
+pub use files::Files;
 pub use routing::Routing;
 pub use sessions::Sessions;
 

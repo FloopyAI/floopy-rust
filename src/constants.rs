@@ -35,6 +35,7 @@ pub(crate) const HEADER_CACHE_BUCKET_MAX_SIZE: &str = "Floopy-Cache-Bucket-Max-S
 pub(crate) const HEADER_PROMPT_ID: &str = "Floopy-Prompt-Id";
 pub(crate) const HEADER_PROMPT_VERSION: &str = "Floopy-Prompt-Version";
 pub(crate) const HEADER_LLM_SECURITY_ENABLED: &str = "floopy-llm-security-enabled";
+pub(crate) const HEADER_FLOOPY_PROVIDER: &str = "floopy-provider";
 pub(crate) const HEADER_CONFIRM: &str = "X-Floopy-Confirm";
 pub(crate) const HEADER_REQUEST_ID: &str = "X-Request-Id";
 pub(crate) const HEADER_FLOOPY_SDK: &str = "X-Floopy-SDK";
@@ -53,6 +54,8 @@ pub(crate) const ENDPOINT_CONSTRAINTS: &str = "/constraints";
 pub(crate) const ENDPOINT_EXPORT_DECISIONS: &str = "/export/decisions";
 pub(crate) const ENDPOINT_ROUTING_EXPLAIN: &str = "/routing/explain";
 pub(crate) const ENDPOINT_EVALUATIONS: &str = "/evaluations";
+pub(crate) const ENDPOINT_FILES: &str = "/files";
+pub(crate) const ENDPOINT_BATCHES: &str = "/batches";
 
 /// Percent-encode a single path segment (matches JS `encodeURIComponent` /
 /// Python `urllib.parse.quote(safe="")`).
@@ -80,4 +83,16 @@ pub(crate) fn evaluation_results(id: &str) -> String {
 }
 pub(crate) fn evaluation_cancel(id: &str) -> String {
     format!("{ENDPOINT_EVALUATIONS}/{}/cancel", path_seg(id))
+}
+pub(crate) fn file_by_id(id: &str) -> String {
+    format!("{ENDPOINT_FILES}/{}", path_seg(id))
+}
+pub(crate) fn file_content(id: &str) -> String {
+    format!("{ENDPOINT_FILES}/{}/content", path_seg(id))
+}
+pub(crate) fn batch_by_id(id: &str) -> String {
+    format!("{ENDPOINT_BATCHES}/{}", path_seg(id))
+}
+pub(crate) fn batch_cancel(id: &str) -> String {
+    format!("{ENDPOINT_BATCHES}/{}/cancel", path_seg(id))
 }

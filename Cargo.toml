@@ -26,6 +26,7 @@ async-openai = { version = "0.38", default-features = false, features = [
 reqwest = { version = "0.13", default-features = false, features = [
     "json",
     "stream",
+    "multipart",
     "rustls",
     "webpki-roots",
 ] }
