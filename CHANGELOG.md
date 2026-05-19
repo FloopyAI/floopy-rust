@@ -6,6 +6,14 @@ the project adheres to [Semantic Versioning](https://semver.org/).
 
 Releases are produced by `release-please` from Conventional Commits.
 
+## [0.3.0](https://github.com/FloopyAI/floopy-rust/compare/floopy-sdk-v0.2.1...floopy-sdk-v0.3.0) (2026-05-19)
+
+
+### Added
+
+* add Batch and Files API resources ([b82dbf5](https://github.com/FloopyAI/floopy-rust/commit/b82dbf52012bfb51705aed0935897d51b31c27fe))
+* Batch and Files API ([33920ae](https://github.com/FloopyAI/floopy-rust/commit/33920aec3bc76c29e2c323eaceb97c20d0c4968b))
+
 ## [0.2.1](https://github.com/FloopyAI/floopy-rust/compare/floopy-sdk-v0.2.0...floopy-sdk-v0.2.1) (2026-05-17)
 
 
