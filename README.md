@@ -159,6 +159,49 @@ let _ = session.messages;
 # Ok(()) }
 ```
 
+### Batch + Files
+
+OpenAI-shaped Batch + Files passthrough. A batch carries no model up
+front, so select the upstream with `RequestOptions::new().provider(...)`
+(the `floopy-provider` header) — optional when the key has one provider.
+
+```no_run
+# use floopy::Floopy;
+# use floopy::types::{BatchCreateParams, FileUploadParams};
+# use floopy::RequestOptions;
+# async fn run(client: Floopy) -> Result<(), Box<dyn std::error::Error>> {
+let file = client.files().upload(
+    FileUploadParams {
+        file: std::fs::read("requests.jsonl")?,
+        filename: Some("requests.jsonl".into()),
+        purpose: "batch".into(),
+    },
+    RequestOptions::new().provider("openai"),
+).await?;
+
+let batch = client.batches().create(
+    BatchCreateParams {
+        input_file_id: file.id,
+        endpoint: "/v1/chat/completions".into(),
+        completion_window: "24h".into(),
+        metadata: None,
+    },
+    RequestOptions::new().provider("openai"),
+).await?;
+
+let done = client.batches().retrieve(&batch.id, RequestOptions::new().provider("openai")).await?;
+if done.status.as_deref() == Some("completed") {
+    if let Some(out) = done.output_file_id {
+        let bytes = client.files().content(&out, RequestOptions::new().provider("openai")).await?;
+        let _ = bytes;
+    }
+}
+# Ok(()) }
+```
+
+`files().list/retrieve/delete` and `batches().list/cancel` are also
+available.
+
 ## Error handling
 
 Every Floopy-only call returns `Result<T, floopy::Error>`:

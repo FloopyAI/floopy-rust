@@ -4,6 +4,8 @@
 use std::collections::HashMap;
 use std::time::Duration;
 
+use crate::constants::HEADER_FLOOPY_PROVIDER;
+
 /// Cache controls. Maps to the `Floopy-Cache-*` headers. A `None` field is
 /// omitted (the gateway default applies).
 #[derive(Debug, Clone, Default)]
@@ -53,6 +55,15 @@ impl RequestOptions {
     pub fn header(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
         self.headers.insert(key.into(), value.into());
         self
+    }
+
+    /// Select the upstream the gateway forwards a Batch/Files request to
+    /// (the `floopy-provider` header). A batch carries no model up front so
+    /// the provider cannot be inferred — set this, or rely on the key's
+    /// single configured provider. No-op for other resources.
+    #[must_use]
+    pub fn provider(self, provider: impl Into<String>) -> Self {
+        self.header(HEADER_FLOOPY_PROVIDER, provider)
     }
 
     /// Override the client timeout for this call.

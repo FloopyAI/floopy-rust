@@ -235,6 +235,73 @@ impl HttpTransport {
         }
     }
 
+    /// Download a raw 2xx body (no JSON decoding) — used for file content.
+    /// Returns the bytes and the `X-Request-Id` header when present.
+    pub(crate) async fn request_bytes(
+        &self,
+        method: Method,
+        path: &str,
+        query: &[(String, String)],
+        req: Option<&RequestOptions>,
+    ) -> Result<(Vec<u8>, Option<String>)> {
+        let url = self.build_url(path, query);
+        let header_map = self.header_map(&self.request_headers(req));
+        let timeout = self.timeout_for(req);
+        let response = self
+            .client
+            .request(method, &url)
+            .headers(header_map)
+            .bearer_auth(&self.api_key)
+            .header(reqwest::header::USER_AGENT, self.user_agent())
+            .timeout(timeout)
+            .send()
+            .await
+            .map_err(map_send_error)?;
+        let request_id = request_id_of(&response);
+        if !response.status().is_success() {
+            return Err(error_from_response(response).await);
+        }
+        let bytes = response.bytes().await.map_err(Error::Connection)?;
+        Ok((bytes.to_vec(), request_id))
+    }
+
+    /// Send a `multipart/form-data` request (file upload) and decode the
+    /// 2xx JSON body into `T` (`None` on 204 / empty body).
+    pub(crate) async fn request_multipart<T: DeserializeOwned>(
+        &self,
+        path: &str,
+        form: reqwest::multipart::Form,
+        req: Option<&RequestOptions>,
+    ) -> Result<(Option<T>, Option<String>)> {
+        let url = self.build_url(path, &[]);
+        let header_map = self.header_map(&self.request_headers(req));
+        let timeout = self.timeout_for(req);
+        let response = self
+            .client
+            .post(&url)
+            .headers(header_map)
+            .bearer_auth(&self.api_key)
+            .header(reqwest::header::USER_AGENT, self.user_agent())
+            .timeout(timeout)
+            .multipart(form)
+            .send()
+            .await
+            .map_err(map_send_error)?;
+        let request_id = request_id_of(&response);
+        if !response.status().is_success() {
+            return Err(error_from_response(response).await);
+        }
+        if response.status().as_u16() == 204 {
+            return Ok((None, request_id));
+        }
+        let text = response.text().await.map_err(Error::Connection)?;
+        if text.is_empty() {
+            return Ok((None, request_id));
+        }
+        let value = serde_json::from_str::<T>(&text).map_err(|e| Error::Decode(e.to_string()))?;
+        Ok((Some(value), request_id))
+    }
+
     /// Stream a JSONL response, yielding one parsed JSON value per non-empty
     /// line. Errors surface as `Err` items.
     pub(crate) async fn stream_lines(
@@ -309,6 +376,41 @@ impl HttpTransport {
         };
         Ok(stream)
     }
+}
+
+fn map_send_error(err: reqwest::Error) -> Error {
+    if err.is_timeout() {
+        Error::Timeout("request timed out".to_owned())
+    } else {
+        Error::Connection(err)
+    }
+}
+
+fn request_id_of(response: &reqwest::Response) -> Option<String> {
+    response
+        .headers()
+        .get(HEADER_REQUEST_ID)
+        .and_then(|v| v.to_str().ok())
+        .map(str::to_owned)
+}
+
+/// Map a non-2xx response to an [`Error`], parsing the body and
+/// `Retry-After` (shared by the multipart / bytes paths).
+async fn error_from_response(response: reqwest::Response) -> Error {
+    let code = response.status().as_u16();
+    let request_id = request_id_of(&response);
+    let retry_after = response
+        .headers()
+        .get(reqwest::header::RETRY_AFTER)
+        .and_then(|v| v.to_str().ok())
+        .and_then(|s| s.parse::<u64>().ok());
+    let raw = response.text().await.unwrap_or_default();
+    let parsed: Option<Value> = if raw.is_empty() {
+        None
+    } else {
+        serde_json::from_str(&raw).ok().or(Some(Value::String(raw)))
+    };
+    from_status(code, parsed, request_id, retry_after)
 }
 
 fn trim_ascii(bytes: &[u8]) -> &[u8] {

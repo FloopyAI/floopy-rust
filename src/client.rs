@@ -13,7 +13,8 @@ use crate::http::{HttpConfig, HttpTransport};
 use crate::openai_delegate::new_openai_delegate;
 use crate::options::FloopyOptions;
 use crate::resources::{
-    Constraints, Decisions, Evaluations, Experiments, Export, Feedback, Routing, Sessions,
+    Batches, Constraints, Decisions, Evaluations, Experiments, Export, Feedback, Files, Routing,
+    Sessions,
 };
 
 /// The Floopy gateway client.
@@ -94,6 +95,18 @@ impl Floopy {
     #[must_use]
     pub fn export(&self) -> Export {
         Export::new(self.transport.clone())
+    }
+
+    /// Manage Batch API input/output files.
+    #[must_use]
+    pub fn files(&self) -> Files {
+        Files::new(self.transport.clone())
+    }
+
+    /// Manage asynchronous batch jobs.
+    #[must_use]
+    pub fn batches(&self) -> Batches {
+        Batches::new(self.transport.clone())
     }
 
     /// Run and inspect dataset evaluations.
