@@ -1,6 +1,6 @@
 [package]
 name = "floopy-sdk"
-version = "0.2.1" # x-release-please-version
+version = "0.3.0" # x-release-please-version
 edition = "2021"
 rust-version = "1.85"
 description = "Official Floopy AI Gateway SDK for Rust. Drop-in wrapper around the async-openai crate with cache, audit, experiments, and security on top."
