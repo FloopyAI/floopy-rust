@@ -17,7 +17,7 @@ exclude = [".github/", "examples/", "tests/", "/.gitignore"]
 name = "floopy"
 
 [dependencies]
-async-openai = { version = "0.38", default-features = false, features = [
+async-openai = { version = "0.40", default-features = false, features = [
     "rustls",
     "chat-completion",
     "embedding",
