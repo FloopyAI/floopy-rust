@@ -6,6 +6,14 @@ the project adheres to [Semantic Versioning](https://semver.org/).
 
 Releases are produced by `release-please` from Conventional Commits.
 
+## [0.4.0](https://github.com/FloopyAI/floopy-rust/compare/floopy-sdk-v0.3.0...floopy-sdk-v0.4.0) (2026-07-06)
+
+
+### Added
+
+* add max_completion_tokens to routing explain params ([a2abfef](https://github.com/FloopyAI/floopy-rust/commit/a2abfef2a50d3086e351dd88f405624c8ebc0da9))
+* add max_completion_tokens to routing explain params ([c65b5be](https://github.com/FloopyAI/floopy-rust/commit/c65b5be3030096eb494fd8310302b627e2f52185))
+
 ## [0.3.0](https://github.com/FloopyAI/floopy-rust/compare/floopy-sdk-v0.2.1...floopy-sdk-v0.3.0) (2026-05-19)
 
 
