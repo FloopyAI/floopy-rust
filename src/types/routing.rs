@@ -29,9 +29,15 @@ pub struct RoutingExplainParams {
     /// Optional sampling temperature.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub temperature: Option<f64>,
-    /// Optional max tokens.
+    /// Optional legacy output-token cap. Prefer [`Self::max_completion_tokens`];
+    /// the gateway coerces this into `max_completion_tokens` before forwarding
+    /// to any `OpenAI`-compatible provider.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub max_tokens: Option<u32>,
+    /// Optional canonical output-token cap (the current `OpenAI` standard).
+    /// Takes precedence over [`Self::max_tokens`] when both are set.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub max_completion_tokens: Option<u32>,
     /// Optional nucleus-sampling top-p.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub top_p: Option<f64>,
@@ -46,6 +52,7 @@ impl RoutingExplainParams {
             messages,
             temperature: None,
             max_tokens: None,
+            max_completion_tokens: None,
             top_p: None,
         }
     }
