@@ -28,7 +28,7 @@ cargo add floopy-sdk async-openai tokio --features tokio/macros,tokio/rt-multi-t
 ```
 
 The crate is published as `floopy-sdk` and imported as `floopy`. Requires
-Rust `>= 1.82`. It is fully async (Tokio).
+Rust `>= 1.85`. It is fully async (Tokio).
 
 ## Quick start
 
@@ -257,3 +257,9 @@ let client = Floopy::builder(std::env::var("FLOOPY_API_KEY")?)
 ## License
 
 Apache-2.0 © Floopy
+
+## Responses API
+
+Use `client.responses().create(...)` / `create_stream(...)` for native `POST /v1/responses`, including reasoning with function tools and typed streaming events. The delegate uses your Floopy base URL, API key and default gateway headers.
+
+This release uses async-openai 0.42.1 with the responses feature. Responses currently routes to compatible OpenAI targets through the existing gateway orchestration. Stateless text caching requires `store: false`; calls with tools or provider-managed history bypass cache. Background jobs and public response-management methods are not exposed by the gateway yet. See [Responses API documentation](https://docs.floopy.ai/docs/api/responses/).

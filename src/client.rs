@@ -61,6 +61,12 @@ impl Floopy {
         })
     }
 
+    /// Native Responses API with the same gateway transport and Floopy headers.
+    #[must_use]
+    pub fn responses(&self) -> async_openai::Responses<'_, OpenAIConfig> {
+        self.openai().responses()
+    }
+
     /// The resolved gateway base URL.
     #[must_use]
     pub fn base_url(&self) -> &str {
