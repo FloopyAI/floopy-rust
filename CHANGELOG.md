@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Expose native Responses creation and streaming through the configured OpenAI delegate.
+- Upgrade to async-openai 0.42.1 with the responses feature.
+
 All notable changes to `floopy-sdk` (Rust) are documented in this file. The
 format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 the project adheres to [Semantic Versioning](https://semver.org/).
