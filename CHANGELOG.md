@@ -11,6 +11,14 @@ the project adheres to [Semantic Versioning](https://semver.org/).
 
 Releases are produced by `release-please` from Conventional Commits.
 
+## [0.5.0](https://github.com/FloopyAI/floopy-rust/compare/floopy-sdk-v0.4.0...floopy-sdk-v0.5.0) (2026-10-07)
+
+
+### Added
+
+* expose native Responses API and upgrade async-openai ([8c48773](https://github.com/FloopyAI/floopy-rust/commit/8c4877393234bbea044ff2e9c9f907fa819d6ecd))
+* expose native Responses API and upgrade async-openai ([feda0c0](https://github.com/FloopyAI/floopy-rust/commit/feda0c021c798db184d1f2ef47f78e86f192507b))
+
 ## [0.4.0](https://github.com/FloopyAI/floopy-rust/compare/floopy-sdk-v0.3.0...floopy-sdk-v0.4.0) (2026-07-06)
 
 
